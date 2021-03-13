@@ -2,6 +2,8 @@ package home.home_work_7;
 
 import home.home_work_6.search.RegExSearch;
 
+import java.io.File;
+
 public class LogFileRepeatedWordsMain {
 
     public static void main(String[] args) {
@@ -14,7 +16,8 @@ public class LogFileRepeatedWordsMain {
             return;
         }
 
-        LogFileRepeatedWords logFile = new LogFileRepeatedWords(folder, "result.txt", new RegExSearch());
+        LogFileRepeatedWords logFile = new LogFileRepeatedWords(new File(folder), new File("result.txt"),
+                new RegExSearch());
         logFile.start();
     }
 }

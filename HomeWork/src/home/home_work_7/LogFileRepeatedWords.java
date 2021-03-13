@@ -10,25 +10,21 @@ import java.nio.file.Path;
 
 public class LogFileRepeatedWords {
 
-    private final File folder;
-    private File booksName;
     private final File fileResult;
     private final ISearchEngine searchEngine;
-    private File[] listFiles;
+    private final File[] listFiles;
     private String textBook;
+    private File booksName;
 
-    public LogFileRepeatedWords(String nameFolder, String nameFileResult, ISearchEngine searchEngine) {
-        this.folder = new File(nameFolder);
-        this.fileResult = new File(nameFileResult);
+    public LogFileRepeatedWords(File nameFolder, File nameFileResult, ISearchEngine searchEngine) {
+        this.fileResult = nameFileResult;
         this.searchEngine = searchEngine;
-    }
-
-    private void setListFiles() {
-        File[] listFiles = this.folder.listFiles();
+        File[] listFiles = nameFolder.listFiles();
         if (listFiles == null || listFiles.length == 0) {
             throw new IllegalArgumentException("данный путь к папке не существует или папка пустая");
         }
         this.listFiles = listFiles;
+
     }
 
     private void printListFiles() {
@@ -95,7 +91,6 @@ public class LogFileRepeatedWords {
     }
 
     public void start() {
-        setListFiles();
         printListFiles();
         setBooksName();
         setTextBook();

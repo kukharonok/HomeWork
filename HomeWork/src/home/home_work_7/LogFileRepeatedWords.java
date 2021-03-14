@@ -14,7 +14,7 @@ public class LogFileRepeatedWords {
     private final ISearchEngine searchEngine;
     private final File[] listFiles;
     private String textBook;
-    private File booksName;
+    private File nameOfBook;
 
     public LogFileRepeatedWords(File nameFolder, File nameFileResult, ISearchEngine searchEngine) {
         this.fileResult = nameFileResult;
@@ -33,37 +33,30 @@ public class LogFileRepeatedWords {
         }
     }
 
-    private File findBooksName(String s) {
-        if (this.listFiles != null) {
-            for (File temp : this.listFiles) {
-                if (temp.getName().equals(s)) {
-                    return temp;
-                }
-            }
-        }
-        return null;
-    }
-
-    private void setBooksName() {
+    private void setNameOfBook() {
         boolean flag;
         File name = null;
         do {
             flag = false;
             System.out.println("Выберите текст, с которым мы будем работать: ");
-            String text = Utils.acceptRequestConsole();
-            name = findBooksName(text);
+            String nameOfBook = Utils.acceptRequestConsole();
+            for (File temp : this.listFiles) {
+                if (temp.getName().equals(nameOfBook)) {
+                    name = temp;
+                }
+            }
             if (name == null) {
                 System.err.println("Неправильно ввели название книги, попытайтесь снова");
                 flag = true;
             }
         } while (flag);
-        this.booksName = name;
+        this.nameOfBook = name;
     }
 
     private void setTextBook() {
         String text = null;
         try {
-            text = Files.readString(Path.of(this.booksName.getAbsolutePath()), Charset.forName("windows-1251"));
+            text = Files.readString(Path.of(this.nameOfBook.getAbsolutePath()), Charset.forName("windows-1251"));
             this.textBook = text;
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -81,7 +74,7 @@ public class LogFileRepeatedWords {
                     break;
                 }
                 long l = this.searchEngine.search(this.textBook, word);
-                writer.write(booksName.getName() + " – " + word + " - " + l + "\r\n");
+                writer.write(nameOfBook.getName() + " – " + word + " - " + l + "\r\n");
             } while (true);
             writer.flush();
         } catch (IOException e) {
@@ -92,7 +85,7 @@ public class LogFileRepeatedWords {
 
     public void start() {
         printListFiles();
-        setBooksName();
+        setNameOfBook();
         setTextBook();
         writerWordsToFile();
     }

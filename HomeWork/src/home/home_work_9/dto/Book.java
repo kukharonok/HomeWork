@@ -9,15 +9,13 @@ import java.nio.file.Path;
 public class Book {
 
     private String textOfBook;
-    private final File nameOfBook;
+    private final String name;
 
-    public Book(File nameOfBook) {
-        this.nameOfBook = nameOfBook;
+    public Book(File fileNameOfBook) {
+        this.name = fileNameOfBook.getName();
         String text = null;
         try {
-            if (nameOfBook != null) {
-                text = Files.readString(Path.of(nameOfBook.getAbsolutePath()), Charset.forName("windows-1251"));
-            }
+            text = Files.readString(Path.of(fileNameOfBook.getAbsolutePath()), Charset.forName("windows-1251"));
             this.textOfBook = text;
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -29,7 +27,7 @@ public class Book {
         return this.textOfBook;
     }
 
-    public File getNameOfBooks() {
-        return this.nameOfBook;
+    public String getName() {
+        return this.name;
     }
 }
